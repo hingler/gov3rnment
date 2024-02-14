@@ -1,6 +1,6 @@
 use serenity::{all::{Message, Ready}, async_trait, client::{Context, EventHandler}};
 
-use crate::{args::arg_parser::ArgParser, command::base_command::BaseCommand};
+use crate::{args::arg_parser::ArgParser, command::{base_command::BaseCommand, demo::pushup::Pushup}};
 use crate::command::command_repo::CommandRepo;
 use crate::command::demo::ping::Ping;
 
@@ -12,6 +12,7 @@ impl Handler {
   pub fn new() -> Self {
     let mut repo = CommandRepo::new();
     repo.insert(String::from("ping"), Box::new(Ping));
+    repo.insert("pushup".to_owned(), Box::new(Pushup));
     return Handler { repo };
   }
 }
