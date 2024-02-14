@@ -19,7 +19,7 @@ impl CommandRepo {
     self.commands.insert(command, ThreadSafeCommand::new(handler));
   }
 
-  pub fn fetch(&self, command: &str) -> Option<& ThreadSafeCommand> {
+  pub fn fetch(&self, command: &str) -> Option<&ThreadSafeCommand> {
     return self.commands.get(command);
   }
 
