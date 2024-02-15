@@ -1,7 +1,11 @@
 
 use std::env;
 
+use command::audio::youtube::HttpKey;
 use serenity::{all::GatewayIntents, Client};
+use songbird::SerenityInit;
+
+use reqwest::Client as HttpClient;
 
 mod handler;
 mod args;
@@ -42,7 +46,12 @@ async fn main() {
   let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
   let j = Handler::new();
 
-  let mut client = Client::builder(&token, intents).event_handler(j).await.expect("err!");
+  let mut client = Client::builder(&token, intents)
+    .event_handler(j)
+    .register_songbird()
+    .type_map_insert::<HttpKey>(HttpClient::new())
+    .await
+    .expect("err!");
   if let Err(why) = client.start().await {
     println!("Client error: {why:?}");
   }

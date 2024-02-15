@@ -10,7 +10,7 @@ pub struct Ping;
 
 #[async_trait]
 impl BaseCommand for Ping {
-  async fn handle_message(&self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
+  async fn handle_message(&mut self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
     println!("preparing to pong...");
     if parsed_args.args.len() > 0 && parsed_args.args[0] == "ping" {
       if let Err(why) = msg.channel_id.say(&ctx.http, "pong").await {

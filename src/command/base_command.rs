@@ -13,7 +13,7 @@ use tokio::sync::Mutex;
 
 #[async_trait]
 pub trait BaseCommand: Send + Sync {
-  async fn handle_message(&self, ctx: &Context, msg: &Message, args: &ArgParser);
+  async fn handle_message(&mut self, ctx: &Context, msg: &Message, args: &ArgParser);
 }
 
 pub struct ThreadSafeCommand {
@@ -25,14 +25,13 @@ impl ThreadSafeCommand {
     let mutex = Mutex::new(command);
     return ThreadSafeCommand { mutex };
   }
-}
 
-#[async_trait]
-impl BaseCommand for ThreadSafeCommand {
-  async fn handle_message(&self, ctx: &Context, msg: &Message, args: &ArgParser) {
-    let command_guard = self.mutex.lock().await;
+  pub async fn handle_message<'a>(&self, ctx: &'a Context, msg: &'a Message, args: &ArgParser<'a>) {
+    let mut command_guard = self.mutex.lock().await;
     println!("handling here...");
-    command_guard.as_ref().handle_message(ctx, msg, args).await;
+
+    // can call in a mutable ctx!!! (lock strips it!)
+    command_guard.as_mut().handle_message(ctx, msg, args).await;
   }
 }
 
