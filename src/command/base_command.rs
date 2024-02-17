@@ -16,6 +16,8 @@ pub trait BaseCommand: Send + Sync {
   async fn handle_message(&mut self, ctx: &Context, msg: &Message, args: &ArgParser);
 }
 
+// breaks it, for as long as instance is active
+// eventually: non-mut instance, don't lock
 pub struct ThreadSafeCommand {
   mutex: Mutex<Box<dyn BaseCommand>>
 }

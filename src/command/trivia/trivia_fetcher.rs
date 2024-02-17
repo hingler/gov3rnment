@@ -1,7 +1,6 @@
 use reqwest::Client;
-use serenity::async_trait;
-use reqwest::Error;
 use serde::Deserialize;
+use html_escape::decode_html_entities;
 
 
 
@@ -63,7 +62,19 @@ impl <'a> TriviaFetcher<'a> {
       }
     }
 
-    let q = res.results[0].clone();
+    if res.response_code != 0 {
+      return Err(String::from("response not available due to API error!"));
+    }
+
+    let mut q = res.results[0].clone();
+    q.r#type = String::from(decode_html_entities(&q.r#type));
+    q.question = String::from(decode_html_entities(&q.question));
+    q.correct_answer = String::from(decode_html_entities(&q.correct_answer));
+
+    for i in 0..q.incorrect_answers.len() {
+      q.incorrect_answers[i] = String::from(decode_html_entities(&q.incorrect_answers[i]));
+    }
+    
     return Ok(q);
   }
 }

@@ -24,7 +24,7 @@ impl Handler {
     repo.insert(String::from("pushup"), Box::new(Pushup));
     repo.insert(String::from("scream"), Box::new(Scream));
     repo.insert(String::from("ytdl"), Box::new(YTCommands));
-    repo.insert(String::from("trivia"), Box::new(Trivia));
+    repo.insert(String::from("trivia"), Box::new(Trivia::new()));
     return Handler { repo };
   }
 }
