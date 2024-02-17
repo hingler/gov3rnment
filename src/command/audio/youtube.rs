@@ -64,6 +64,9 @@ impl BaseCommand for YTCommands {
 
     // tba:
     // - per-guild queueing system (should be easy)
-    //   - note: need to share an arc btwn all players lol
+    //   - arc for each player w mutex
+    //   - on play: check if resource is in use
   }
+
+
 }

@@ -1,6 +1,15 @@
 use serenity::{all::{Message, Ready}, async_trait, client::{Context, EventHandler}};
 
-use crate::{args::arg_parser::ArgParser, command::{audio::youtube::YTCommands, demo::pushup::Pushup, hunor::scream::Scream}};
+use crate::{
+  args::arg_parser::ArgParser, 
+  command::{
+    audio::youtube::YTCommands, 
+    demo::pushup::Pushup, 
+    hunor::scream::Scream, 
+    trivia::solo_trivia::Trivia
+  }
+};
+
 use crate::command::command_repo::CommandRepo;
 use crate::command::demo::ping::Ping;
 
@@ -15,6 +24,7 @@ impl Handler {
     repo.insert(String::from("pushup"), Box::new(Pushup));
     repo.insert(String::from("scream"), Box::new(Scream));
     repo.insert(String::from("ytdl"), Box::new(YTCommands));
+    repo.insert(String::from("trivia"), Box::new(Trivia));
     return Handler { repo };
   }
 }
