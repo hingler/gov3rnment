@@ -10,6 +10,7 @@ use reqwest::Client as HttpClient;
 mod handler;
 mod args;
 mod command;
+mod db;
 
 
 
