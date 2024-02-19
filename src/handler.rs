@@ -1,6 +1,15 @@
+use std::sync::{Arc, Mutex};
+
+use rusqlite::Connection;
 use serenity::{all::{Message, Ready}, async_trait, client::{Context, EventHandler}};
 
-use crate::{args::arg_parser::ArgParser, command::{audio::youtube::YTCommands, demo::pushup::Pushup, hunor::scream::Scream}};
+use crate::{
+  args::arg_parser::ArgParser, 
+  command::{
+    audio::youtube::YTCommands, demo::pushup::Pushup, hunor::scream::Scream, image::pixelsort::Pixelsort, trivia::{solo_trivia::Trivia, trivia_record::TriviaRecord}
+  }, db::repo::TriviaRepo
+};
+
 use crate::command::command_repo::CommandRepo;
 use crate::command::demo::ping::Ping;
 
@@ -15,6 +24,14 @@ impl Handler {
     repo.insert(String::from("pushup"), Box::new(Pushup));
     repo.insert(String::from("scream"), Box::new(Scream));
     repo.insert(String::from("ytdl"), Box::new(YTCommands));
+
+    let conn = Arc::new(Mutex::new(Box::new(Connection::open("./gov_table.db3").unwrap())));
+    let trivia_repo = Arc::new(TriviaRepo::new(&conn));
+
+    repo.insert(String::from("trivia"), Box::new(Trivia::new(&trivia_repo)));
+    repo.insert(String::from("record"), Box::new(TriviaRecord::new(&trivia_repo)));
+
+    repo.insert(String::from("pixelsort"), Box::new(Pixelsort));
     return Handler { repo };
   }
 }

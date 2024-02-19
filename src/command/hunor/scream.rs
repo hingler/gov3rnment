@@ -14,7 +14,7 @@ pub struct Scream;
 
 #[async_trait]
 impl BaseCommand for Scream {
-  async fn handle_message(&mut self, ctx: &Context, msg: &Message, _: &ArgParser) {
+  async fn handle_message(&self, ctx: &Context, msg: &Message, _: &ArgParser) {
     // static screams list
     let scream: &'static str = SCREAMS.choose(&mut rand::thread_rng()).unwrap();
     if let Err(why) = msg.channel_id.say(&ctx.http, scream).await {

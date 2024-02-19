@@ -9,7 +9,7 @@ pub struct Pushup;
 
 #[async_trait]
 impl BaseCommand for Pushup {
-  async fn handle_message(&mut self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
+  async fn handle_message(&self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
     if parsed_args.args.len() > 1 {
       // turbofish - specify gen
       let num_string = parsed_args.args[1].parse::<i64>();

@@ -24,7 +24,7 @@ impl TypeMapKey for HttpKey {
 
 #[async_trait]
 impl BaseCommand for YTCommands {
-  async fn handle_message(&mut self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
+  async fn handle_message(&self, ctx: &Context, msg: &Message, parsed_args: &ArgParser) {
     // register as yt prob
     // - check parser for a url (args[1])
     // - if valid: play on connect
@@ -33,7 +33,8 @@ impl BaseCommand for YTCommands {
     if parsed_args.args.len() < 2 {
       // do nothing
       if let Err(why) = msg.channel_id.say(&ctx.http, "link not given :/").await {
-        println!("error occured in yt command: {why:?}")
+        println!("error occured in yt command: {why:?}");
+        return;
       }
     }
 
@@ -64,6 +65,9 @@ impl BaseCommand for YTCommands {
 
     // tba:
     // - per-guild queueing system (should be easy)
-    //   - note: need to share an arc btwn all players lol
+    //   - arc for each player w mutex
+    //   - on play: check if resource is in use
   }
+
+
 }
