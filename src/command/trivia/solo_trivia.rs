@@ -96,7 +96,7 @@ impl BaseCommand for Trivia {
     println!("g");
 
     let results = responses.expect("non-error case");
-    let (correct_users, incorrect_users) = self.get_correct_respondants(question.correct_idx, &results).await;
+    let (correct_users, incorrect_users) = self.get_correct_respondants(msg, question.correct_idx, &results).await;
 
     let mut answer_message = String::new();
 
@@ -248,7 +248,7 @@ impl Trivia {
     return Some(responses);
   }
 
-  async fn get_correct_respondants(&self, idx: usize, responses: &DiscordTriviaResponses) -> (Vec<User>, Vec<User>) {
+  async fn get_correct_respondants(&self, msg: &Message, idx: usize, responses: &DiscordTriviaResponses) -> (Vec<User>, Vec<User>) {
     // everyone in correct idx gets moved to vec
     // if incorrect user is in correct vec, then remove
 
@@ -276,6 +276,11 @@ impl Trivia {
     }
 
     println!("returning correct users...");
+
+    // ensure that requester responds
+    if !correct_users.contains(&msg.author) {
+      incorrect_users.insert(msg.author.clone());
+    }
 
     return (correct_users.to_vec(), incorrect_users.iter().cloned().collect::<Vec<User>>());
   }

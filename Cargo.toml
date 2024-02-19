@@ -10,11 +10,11 @@ serenity = { version = "0.12.0", features = [ "client", "standard_framework", "v
 tokio = { version = "1.21.2", features = [ "macros", "rt-multi-thread" ] }
 songbird = "0.4.0"
 rand = "0.8.5"
-reqwest = "0.11.24"
+reqwest = { version = "0.11.24", default-features = false, features = ["json"] }
 symphonia = { version = "0.5.3", features = ["isomp4", "mkv"] }
 serde_json = "1.0.113"
 serde = "1.0.196"
 html-escape = "0.2.13"
 rusqlite = { version = "0.31.0", features = ["bundled"] }
-photon-rs = "0.3.2"
-wasm-bindgen = "0.2.91"
+photon-rs = { git = "https://github.com/silvia-odwyer/photon", default-features = false }
+image = "0.24.8"

@@ -6,10 +6,7 @@ use serenity::{all::{Message, Ready}, async_trait, client::{Context, EventHandle
 use crate::{
   args::arg_parser::ArgParser, 
   command::{
-    audio::youtube::YTCommands, 
-    demo::pushup::Pushup, 
-    hunor::scream::Scream, 
-    trivia::{solo_trivia::Trivia, trivia_record::TriviaRecord}
+    audio::youtube::YTCommands, demo::pushup::Pushup, hunor::scream::Scream, image::pixelsort::Pixelsort, trivia::{solo_trivia::Trivia, trivia_record::TriviaRecord}
   }, db::repo::TriviaRepo
 };
 
@@ -33,6 +30,8 @@ impl Handler {
 
     repo.insert(String::from("trivia"), Box::new(Trivia::new(&trivia_repo)));
     repo.insert(String::from("record"), Box::new(TriviaRecord::new(&trivia_repo)));
+
+    repo.insert(String::from("pixelsort"), Box::new(Pixelsort));
     return Handler { repo };
   }
 }
